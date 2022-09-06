@@ -80,6 +80,7 @@ class snakeEnv:
                 self.grid[self.appleId].isSnake = False
                 self.grid[self.appleId].isApple = True
                 self.grid[self.appleId].defineTileColor()
+                break
     
     def getVelocity(self,action):
         vx = self.actionDict.get(action).get('VX')
@@ -131,6 +132,8 @@ class snakeEnv:
         # function to see if the snake has eaten apple
         # if yes then the snake will grow by one unit
         if self.snake[-1] == self.appleId:
+            self.grid[self.appleId].isApple = False 
+            self.grid[self.appleId].defineTileColor()
             self.resetApple()
             self.growSnake()
             return True
