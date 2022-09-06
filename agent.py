@@ -70,7 +70,7 @@ class agent(snakeEnv):
             Boolean: level status whether the level is won or lost
         """
         self.learnQtable()
-        print("Learnt the grid")
+        # print("Learnt the grid")
         self.takeAction()
         game_Over = self.gameOver() # checking if the action will lead to end of game
         if game_Over:

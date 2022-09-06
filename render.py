@@ -29,7 +29,7 @@ class gameWindow(pyglet.window.Window,agent):
                 
     
     def update(self,dt):
-        while self.gameCtr < self.maxGame:
+        if self.gameCtr < self.maxGame:
             game_Over,gameLevelUp = self.algorithm()
             if gameLevelUp:
                 self.gameCtr+=1
