@@ -7,9 +7,9 @@ class agent(snakeEnv):
         snakeEnv.__init__(self,gridSize)
         
         self.appleReward = 5
-        self.snakeReward = -10
-        self.beyondWallReward = -10
-        self.tileReward = -1
+        self.snakeReward = -100
+        self.beyondWallReward = -100
+        self.tileReward = 0
         self.gamma = 0.9
         """
         Q table shall be a 2d matrix where number of rows 
@@ -83,7 +83,7 @@ class agent(snakeEnv):
         self.takeAction()
         game_Over = self.gameOver() # checking if the action will lead to end of game
         if game_Over:
-            self.gameReset()
+            # self.gameReset()
             return False, False
         else:
             self.moveSnake()
