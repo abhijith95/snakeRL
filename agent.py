@@ -34,7 +34,15 @@ class agent(snakeEnv):
         return reward
     
     def learnQtable(self):
-        # function that updates the q table before every move
+        """
+        Here iterative approach is used to calculate the value of each state. In reality
+        if enough iteration is done this value will converge to the true value function.
+        Since infinite loop is not possible a threshold is given, which is the absolute
+        difference in the value function in successive iteration. An error value is 
+        measured which is equal to the maximum value difference of all the states.
+        This error should be less than the decided threshold. Once the value of each grid 
+        is calculated action is taken greedily to maximize the reward.
+        """
         threshold = 0.01
         error = 1
         while error > threshold:
@@ -68,6 +76,7 @@ class agent(snakeEnv):
         
         Returns:
             Boolean: level status whether the level is won or lost
+            Boolean: game status whether game is over or not
         """
         self.learnQtable()
         # print("Learnt the grid")
@@ -75,7 +84,7 @@ class agent(snakeEnv):
         game_Over = self.gameOver() # checking if the action will lead to end of game
         if game_Over:
             self.gameReset()
-            return False
+            return False, False
         else:
             self.moveSnake()
             gameLevelUp = self.eatsApple()

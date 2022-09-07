@@ -22,6 +22,7 @@ class gridTile:
         self.defineTileColor()
     
     def defineTileColor(self):
+        # sets the color property of each tile
         self.color = (self.isSnake*self.snakeTileColor) + \
                     self.isNormal*self.tileColor + self.isApple*self.appleTileColor
 
@@ -46,10 +47,10 @@ class snakeEnv:
                            self.possibleActions[3]: {'VX':-1,'VY':0}}
     
     def gameReset(self):
-        # function that resets the game to level 1
-        
-        # id of the tiles that contains the snake body. This is fixed
-        # relative to the grid size. Head will always be at the end of the list
+        """
+        Function that resets the grid to level 1 where the snake length is 
+        2 units. The position of the snake is fixed relative to the grid size.
+        """
         head = int(self.gridSize*self.gridSize/2) + int(self.gridSize/2)
         self.snake = [head-1, head] 
         ctr = 0
@@ -83,12 +84,28 @@ class snakeEnv:
                 break
     
     def getVelocity(self,action):
+        """Depending on the chosen action the head of the snake can move
+        in four different ways which are captured here.
+
+        Args:
+            action (string): the direction of movement for the snake head.
+            String is chosen from self.possibleActions array.
+
+        Returns:
+            int,int: here velocity refers to the id of the grid where the snake
+            head will be after taking the action.
+        """
         vx = self.actionDict.get(action).get('VX')
         vy = self.actionDict.get(action).get('VY')
         return vx,vy    
     
     def moveSnake(self):
-        # function that moves the snake according to the action taken
+        """
+        Function that moves the entire snake body according to the action taken.
+        The idea is that going from the tail to body-1 unit, each unit will take
+        the position of the successor. The head alone will have special movement
+        according to the velocity, dependent on the action taken.
+        """
         
         def convertToSnakeTile(id):
             # function that converts the tile to snake tile
@@ -97,7 +114,7 @@ class snakeEnv:
             self.grid[id].defineTileColor()
         
         def convertToNormalTile(id):
-            # function that converts the tile to snake tile
+            # function that converts the tile to normal tile
             self.grid[id].isSnake = False
             self.grid[id].isNormal = True
             self.grid[id].defineTileColor()
@@ -110,10 +127,8 @@ class snakeEnv:
                 # converting the tail tile to normal tile
                 convertToNormalTile(int(self.snake[0]))
             
-            # the snake tail end shall follow the body before it.
-            # in this way all the tiles except the head will follow the one before it.    
+            # wiggling the snake forward       
             self.snake[i]=self.snake[i+1]
-            # converting the new moved tile to snake tile
             convertToSnakeTile(int(self.snake[i]))
         
         # moving the head according to the action taken
@@ -162,12 +177,14 @@ class snakeEnv:
     
     def gameOver(self):
         # function to check if the player lost
-        
+        game_over = False
         # see if the head of the snake is beyond the wall
         vx,vy = self.getVelocity(self.currentAction)
         beyondWall = self.goingBeyondWall(int(self.snake[-1]),vx,vy)
+        
+        # check if snake has eaten itself
         snakeHead_nextStep = self.snake[-1]+vx+vy
-        game_over = False
+        
         if snakeHead_nextStep in self.snake:
             game_over = True
         

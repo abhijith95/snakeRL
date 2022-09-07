@@ -7,11 +7,11 @@ class gameWindow(pyglet.window.Window,agent):
     def __init__(self,gridSize,maxGame,*args,**kwargs):
         agent.__init__(self,gridSize)
         pyglet.window.Window.__init__(self,*args,**kwargs)
-        self.gameCtr = 0 # number of games played in total
+        self.levelCtr = 0 # number of games played in total
         self.gridSize = gridSize
         self.startX, self.startY = 200,600
         self.tileSize = 20
-        self.maxGame = maxGame
+        self.maxLevel = maxGame
     
     def on_draw(self):
         self.clear()
@@ -29,15 +29,10 @@ class gameWindow(pyglet.window.Window,agent):
                 
     
     def update(self,dt):
-        if self.gameCtr < self.maxGame:
+        if self.levelCtr < self.maxLevel:
             game_Over,gameLevelUp = self.algorithm()
             if gameLevelUp:
-                self.gameCtr+=1
+                self.levelCtr+=1
             elif game_Over:
                 print("Game over, agent lost")
-                self.gameCtr = self.maxGame +1
-
-
-game = gameWindow(20,10,800,800,caption = "Snake!",resizable = True)
-pyglet.clock.schedule_interval(game.update, 1)
-pyglet.app.run() # command to execute running the window
+                self.levelCtr = self.maxLevel +1
